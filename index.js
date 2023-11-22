@@ -161,36 +161,23 @@ class myclass {
 const myobj = new myclass();
 console.log(myobj.get());
 
-const post_array = [];
-post_array.push({
-  id: "07281559-0695-0216-0000-c269be8b7592",
-  filters: [
-    ["resource_type", "=", "html"],
-    "and",
-    ["meta.scripts_count", ">", 40],
-  ],
-  order_by: ["meta.content.plain_text_word_count,desc"],
-  limit: 10,
-});
-const axios = require("axios");
-axios({
-  method: "post",
-  url: "https://api.dataforseo.com/v3/on_page/pages",
-  auth: {
-    username: "nitin.gupta@atriina.com",
-    password: "d8899cffb47f4ca5",
-  },
-  data: post_array,
-  headers: {
-    "content-type": "application/json",
-  },
-})
-  .then(function (response) {
-    var result = response["data"]["tasks"][0]["data"];
-    // Result data
+function Queue() {
+  const data = [];
+  return {
+    enqueue(item) {
+      data.push(item);
+    },
+    dequeue() {
+      return data.pop();
+    },
+  };
+}
 
-    console.log(result);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+const myQueue = Queue();
+
+myQueue.enqueue(1);
+myQueue.enqueue(2);
+
+const r1 = myQueue.dequeue() === 1;
+const r2 = myQueue.dequeue() === 2;
+console.log(r1 && r2);
